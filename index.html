@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Descargar de YouTube</title>
+</head>
+<body>
+    <h1>Descargar video de YouTube</h1>
+    <input type="text" id="url" placeholder="Pega el enlace de YouTube aquí">
+    <button onclick="getLink()">Obtener Link</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function getLink() {
+            const url = document.getElementById('url').value;
+            const response = await fetch('/getlink', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url })
+            });
+            const data = await response.json();
+            if (data.link) {
+                document.getElementById('result').innerHTML = `<a href="${data.link}" target="_blank">Descargar Video</a>`;
+            } else {
+                document.getElementById('result').innerText = 'Error: ' + (data.error || 'No se pudo obtener el link');
+            }
+        }
+    </script>
+</body>
+</html>
